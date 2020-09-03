@@ -15,28 +15,28 @@ steps:
   inputs:
     script: |
       npm i @azure/storage-blob
-    workingDirectory: '$(System.DefaultWorkingDirectory)/_BUILD/ScriptsV2'
+    workingDirectory: '$(Pipeline.Workspace)/_BUILD/ScriptsV2'
 
 - task: CmdLine@2
   displayName: '2. Capture Dev Content Model'
   inputs:
     script: |
       node ./capture $(SourceAPIMEndpoint) "$(SourceAPIMToken)" snapshot.json
-    workingDirectory: '$(System.DefaultWorkingDirectory)/_BUILD/ScriptsV2'
+    workingDirectory: '$(Pipeline.Workspace)/_BUILD/ScriptsV2'
 
 - task: CmdLine@2
   displayName: '3. Clean QA'
   inputs:
     script: |
       node ./cleanup $(TargetAPIMEndpoint) "$(TargetAPIMToken)"
-    workingDirectory: '$(System.DefaultWorkingDirectory)/_BUILD/ScriptsV2'
+    workingDirectory: '$(Pipeline.Workspace)/_BUILD/ScriptsV2'
 
 - task: CmdLine@2
   displayName: '4. Deploy to QA'
   inputs:
     script: |
       node ./generate $(TargetAPIMEndpoint) "$(TargetAPIMToken)" snapshot.json
-    workingDirectory: '$(System.DefaultWorkingDirectory)/_BUILD/ScriptsV2'
+    workingDirectory: '$(Pipeline.Workspace)/_BUILD/ScriptsV2'
 
 - task: PowerShell@2
   inputs:
