@@ -30,5 +30,9 @@ These pipline variables are required for release:
  
  - SourceAPIMEndpoint instance-name.management.azure-api.net
  - SourceAPIMToken SharedAccessSignature integra... 
- - TargetAPIMEndpoint instance-name>.management.azure-api.net
+ - TargetAPIMEndpoint instance-name>.management.azure-api.net#
  - TargetAPIMToken SharedAccessSignature integra...
+
+## Reference
+
+- https://github.com/Azure/api-management-developer-portal/wiki
