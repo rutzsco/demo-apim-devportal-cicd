@@ -42,6 +42,6 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      $header = @{username='me';moredata='qwerty'}
-      Invoke-WebRequest -Uri http://example.com/foobar -Method POST -Body $postParams -Headers $header
+      $header = @{"Authorization"="$(TargetAPIMToken)"} 
+      Invoke-WebRequest -Uri http://example.com/foobar -Method POST -Headers $header
     
