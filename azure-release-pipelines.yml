@@ -43,5 +43,5 @@ steps:
     targetType: 'inline'
     script: |
       $header = @{"Authorization"="$(TargetAPIMToken)"} 
-      Invoke-WebRequest -Uri http://example.com/foobar -Method POST -Headers $header
+      Invoke-WebRequest -Uri $(TargetAPIMEndpoint) -Method POST -Headers $header
     
