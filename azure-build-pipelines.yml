@@ -14,3 +14,9 @@ steps:
   inputs:
     PathtoPublish: scripts
     ArtifactName: Scripts
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: Scripts'
+  inputs:
+    PathtoPublish: scripts.v2
+    ArtifactName: ScriptsV2
