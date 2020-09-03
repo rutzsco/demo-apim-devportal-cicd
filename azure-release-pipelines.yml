@@ -37,4 +37,11 @@ steps:
     script: |
       node ./generate $(TargetAPIMEndpoint) "$(TargetAPIMToken)" snapshot.json
     workingDirectory: '$(System.DefaultWorkingDirectory)/_BUILD/ScriptsV2'
+
+- task: PowerShell@2
+  inputs:
+    targetType: 'inline'
+    script: |
+      $header = @{username='me';moredata='qwerty'}
+      Invoke-WebRequest -Uri http://example.com/foobar -Method POST -Body $postParams -Headers $header
     
