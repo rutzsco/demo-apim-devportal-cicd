@@ -9,7 +9,13 @@ variables:
   vmImageName: 'vs2017-win2016'
 
 steps:
-
+- task: CmdLine@2
+  displayName: '1. Install Modules'
+  inputs:
+    script: |
+      dir
+    workingDirectory: '$(Pipeline.Workspace)'
+    
 - task: CmdLine@2
   displayName: '1. Install Modules'
   inputs:
