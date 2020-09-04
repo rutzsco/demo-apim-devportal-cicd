@@ -28,7 +28,11 @@ https://github.com/rutzsco/demo-apim-devportal-cicd/tree/master/scripts.v2
 ### Variables
 These pipline variables are required for release:
  
- - SourceAPIMEndpoint instance-name.management.azure-api.net
- - SourceAPIMToken SharedAccessSignature integra... 
- - TargetAPIMEndpoint instance-name>.management.azure-api.net
- - TargetAPIMToken SharedAccessSignature integra...
+ - SourceAPIMEndpoint - instance-name.management.azure-api.net
+ - SourceAPIMToken - SharedAccessSignature integra... 
+ - TargetAPIMEndpoint - instance-name>.management.azure-api.net
+ - TargetAPIMToken - SharedAccessSignature integra...
+
+## Reference
+
+- https://github.com/Azure/api-management-developer-portal/wiki
