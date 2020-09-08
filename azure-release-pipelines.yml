@@ -64,5 +64,7 @@ stages:
                 targetType: 'inline'
                 script: |
                   $targetEndpoint = "https://" + $env:TARGETAPIMENDPOINT
+                  Write-Output $targetEndpoint
                   $header = @{"Authorization"="$env:TargetAPIMToken"} 
+                  Write-Output $header
                   Invoke-WebRequest -Uri $targetEndpoint -Method POST -Headers $header
