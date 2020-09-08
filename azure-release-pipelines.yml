@@ -7,48 +7,61 @@ resources:
   
 variables:
   vmImageName: 'vs2017-win2016'
+  azureSubscription: 'Internal Demo Account (164a84cf-b099-4567-a527-c2a8143a32c7)'
+  azureSubscriptionProd: 'Rutzsco-MSDN'
 
-steps:
+stages:
+ - stage: CI
+   displayName: CI stage 
+   variables:
+     app-name: 'remote-monitor-ingest-ci'
+     storageAccountName: 'azfunctionssmci'
+     region: 'Central US'
+     resourceGroupName: 'remote-monitor-ci'  
+   jobs:
+   - deployment: Deploy
+     displayName: Deploy
+     environment: 'CI'
+     pool:
+        vmImage: $(vmImageName)   
+      
+     strategy:
+        runOnce:
+          deploy:
+  
+            steps:
+              
+            - task: CmdLine@2
+              displayName: '1. Install Modules'
+              inputs:
+                script: |
+                  npm i @azure/storage-blob
+                workingDirectory: '$(Pipeline.Workspace)/build/ScriptsV2'
 
-- task: CmdLine@2
-  displayName: '1. Install Modules'
-  inputs:
-    script: |
-      dir
-    workingDirectory: '$(Pipeline.Workspace)/b'
-    
-- task: CmdLine@2
-  displayName: '1. Install Modules'
-  inputs:
-    script: |
-      npm i @azure/storage-blob
-    workingDirectory: '$(Pipeline.Workspace)/build/ScriptsV2'
+            - task: CmdLine@2
+              displayName: '2. Capture Dev Content Model'
+              inputs:
+                script: |
+                  node ./capture $(SourceAPIMEndpoint) "$(SourceAPIMToken)" snapshot.json
+                workingDirectory: '$(Pipeline.Workspace)/build/ScriptsV2'
 
-- task: CmdLine@2
-  displayName: '2. Capture Dev Content Model'
-  inputs:
-    script: |
-      node ./capture $(SourceAPIMEndpoint) "$(SourceAPIMToken)" snapshot.json
-    workingDirectory: '$(Pipeline.Workspace)/build/ScriptsV2'
+            - task: CmdLine@2
+              displayName: '3. Clean QA'
+              inputs:
+                script: |
+                  node ./cleanup $(TargetAPIMEndpoint) "$(TargetAPIMToken)"
+                workingDirectory: '$(Pipeline.Workspace)/build/ScriptsV2'
 
-- task: CmdLine@2
-  displayName: '3. Clean QA'
-  inputs:
-    script: |
-      node ./cleanup $(TargetAPIMEndpoint) "$(TargetAPIMToken)"
-    workingDirectory: '$(Pipeline.Workspace)/build/ScriptsV2'
+            - task: CmdLine@2
+              displayName: '4. Deploy to QA'
+              inputs:
+                script: |
+                  node ./generate $(TargetAPIMEndpoint) "$(TargetAPIMToken)" snapshot.json
+                workingDirectory: '$(Pipeline.Workspace)/build/ScriptsV2'
 
-- task: CmdLine@2
-  displayName: '4. Deploy to QA'
-  inputs:
-    script: |
-      node ./generate $(TargetAPIMEndpoint) "$(TargetAPIMToken)" snapshot.json
-    workingDirectory: '$(Pipeline.Workspace)/build/ScriptsV2'
-
-- task: PowerShell@2
-  inputs:
-    targetType: 'inline'
-    script: |
-      $header = @{"Authorization"="$env:TargetAPIMToken"} 
-      Invoke-WebRequest -Uri https://$env:TARGETAPIMENDPOINT -Method POST -Headers $header
-    
+            - task: PowerShell@2
+              inputs:
+                targetType: 'inline'
+                script: |
+                  $header = @{"Authorization"="$env:TargetAPIMToken"} 
+                  Invoke-WebRequest -Uri https://$env:TARGETAPIMENDPOINT -Method POST -Headers $header
