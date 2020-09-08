@@ -63,7 +63,7 @@ stages:
               inputs:
                 targetType: 'inline'
                 script: |
-                  $targetEndpoint = "https://" + $env:TARGETAPIMENDPOINT
+                  $targetEndpoint = "https://" + $env:TARGETAPIMENDPOINT + "/publish"
                   Write-Output $targetEndpoint
                   $header = @{"Authorization"="$env:TargetAPIMToken"} 
                   Write-Output $header
