@@ -65,6 +65,8 @@ stages:
                 script: |
                   $url = "https://" + $env:TARGETAPIMENDPOINT + "/publish"
                   Write-Output $targetEndpoint
-                  $header = @{"Authorization"="$env:TargetAPIMToken"} 
+                  $header = @{
+                    'Authorization' = '$env:TargetAPIMToken'
+                    }
                   Write-Output $header
                   Invoke-RestMethod --Method 'Post' -Uri $url -Headers $header
